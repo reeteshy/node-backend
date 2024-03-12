@@ -1,46 +1,51 @@
-
+// require('dotenv').config({path: './env'})
+import dotenv from "dotenv"
 import connectDB from "./db/index.js";
-import app from "./app.js";
+import {app} from './app.js'
+dotenv.config({
+    path: './.env'
+})
 
-const port = process.env.PORT || 4000;
+
 
 connectDB()
-.then(()=>{
-    app.listen(port, ()=>{
-        console.log("Application is runnign on port ", port)
+.then(() => {
+    app.listen(process.env.PORT || 8000, () => {
+        console.log(`⚙️ Server is running at port : ${process.env.PORT}`);
     })
 })
-.catch((error)=>{
-    console.log("MongoDB connection failed ", error)
+.catch((err) => {
+    console.log("MONGO db connection failed !!! ", err);
 })
+
+
+
+
+
+
+
+
+
 
 /*
-require('dotenv').config({path:'/.env'})
-const mongoose = require("mongoose");
-import { DB_NAME } from "./constants";
-import { express } from "express";
-
-const port = process.env.PORT || 4000;
-
+import express from "express"
 const app = express()
+( async () => {
+    try {
+        await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`)
+        app.on("errror", (error) => {
+            console.log("ERRR: ", error);
+            throw error
+        })
 
-(async () => {
-  try {
-    await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`);
-    app.on((error)=>{
-        console.log("Error of DB connection ", error)
-        throw error
-    })
-    app.listion(port, ()=> { 
-        console.log("App is listioning on port ", port)
-    })
-    const Cat = mongoose.model("Cat", { name: String });
+        app.listen(process.env.PORT, () => {
+            console.log(`App is listening on port ${process.env.PORT}`);
+        })
 
-    const kitty = new Cat({ name: "Zildjian" });
-    kitty.save().then(() => console.log("meow"));
-  } catch (error) {
-    console.log("Connection has eror ", error);
-    throw error;
-  }
-})();
+    } catch (error) {
+        console.error("ERROR: ", error)
+        throw err
+    }
+})()
+
 */
